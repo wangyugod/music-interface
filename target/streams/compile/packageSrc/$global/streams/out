@@ -1,0 +1,35 @@
+[0m[[0minfo[0m] [0mPackaging E:\develop\music-interface\target\scala-2.10\music-interface_2.10-0.2-sources.jar ...[0m
+[0m[[0mdebug[0m] [0mInput file mappings:[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\api\RootService.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\api\RootService.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\routing\RestRouting.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\routing\RestRouting.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\db\DBHelper.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\db\DBHelper.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\ReactiveSystem.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\ReactiveSystem.scala[0m
+[0m[[0mdebug[0m] [0m	application.conf[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\resources\application.conf[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\profile\ProfileActor.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\profile\ProfileActor.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\routing\PerRequest.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\routing\PerRequest.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\core\MusicPlayActor.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\MusicPlayActor.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\core\AccessRushActor.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\AccessRushActor.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\db\AccessRushDB.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\db\AccessRushDB.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\profile\ProfileService.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\profile\ProfileService.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\domain\Domain.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\domain\Domain.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\core\DataSyncActor.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\DataSyncActor.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\core\WeChatTokenActor.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\WeChatTokenActor.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\api\MainActors.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\api\MainActors.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\api\ReactiveApi.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\api\ReactiveApi.scala[0m
+[0m[[0minfo[0m] [0mDone packaging.[0m
