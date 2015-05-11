@@ -1,17 +1,16 @@
 package infothunder.reactive.core
 
-import java.sql.{Connection, ResultSet}
-
-import akka.actor.{Actor, ActorLogging}
+import java.sql.{ Connection, ResultSet }
+import akka.actor.{ Actor, ActorLogging }
 import infothunder.reactive.db.DBHelper
 import infothunder.reactive.domain._
 import DBHelper._
+import java.text.SimpleDateFormat
 
 /**
  * Created by Simon Wang on 2014/12/3.
  */
 class DataSyncActor extends Actor with ActorLogging {
-
 
   def receive = {
     case artistRequest: SyncArtistRequest =>
@@ -31,19 +30,19 @@ class DataSyncActor extends Actor with ActorLogging {
 
   }
 
-
   def syncArtist(request: SyncArtistRequest) = {
-    val sql = "select * from( select a.*, rownum ru from (select * from syncmaterial_artist a order by artistid asc) a where rownum <= ?) where ru > ? "
+    val sql = "select * from( select a.*, rownum ru from (select * from syncmaterial_artist a where timetab >= ? order by timetab asc) a where rownum <= ?) where ru > ? "
     withStatement(sql) {
       prepareStatement =>
-        prepareStatement.setInt(2, (request.pageNumber - 1) * request.recordPerPage)
-        prepareStatement.setInt(1, request.pageNumber * request.recordPerPage)
+        prepareStatement.setInt(3, (request.pageNumber - 1) * request.recordPerPage)
+        prepareStatement.setInt(2, request.pageNumber * request.recordPerPage)
+        prepareStatement.setDate(1, parseDate(request.fromTime))
         log.debug(s"before execute query")
         val r = prepareStatement.executeQuery()
         log.debug(s"execute query done ")
         var list = List[Artist]()
         while (r.next()) {
-          list = Artist(r.getString("ARTISTID"), r.getString("ARTISTNAME"), r.getString("GENDER"), r.getString("ENGLISHNAME"), r.getString("ARTISTNAMEPINYIN"), r.getString("NICKNAME"), r.getString("ARTISTPICS"), r.getString("ARTISTPICM"), r.getString("COMPANY"), r.getString("COUNTRY"), r.getString("BIRTHDATE"), r.getString("BIRTHPLACE"), r.getString("SCHOOL"), r.getString("REPRESENTWORKS"), r.getString("HEIGHT"), r.getString("WEIGHT"), r.getString("HOBBY"), r.getString("AWARDS"), r.getString("INTRO"), r.getString("SINGERAREA"), r.getString("SINGERSTYLE")) :: list
+          list = Artist(r.getString("ARTISTID"), r.getString("ARTISTNAME"), r.getString("GENDER"), r.getString("ENGLISHNAME"), r.getString("ARTISTNAMEPINYIN"), r.getString("NICKNAME"), r.getString("ARTISTPICS"), r.getString("ARTISTPICM"), r.getString("COMPANY"), r.getString("COUNTRY"), r.getString("BIRTHDATE"), r.getString("BIRTHPLACE"), r.getString("SCHOOL"), r.getString("REPRESENTWORKS"), r.getString("HEIGHT"), r.getString("WEIGHT"), r.getString("HOBBY"), r.getString("AWARDS"), r.getString("INTRO"), r.getString("SINGERAREA"), r.getString("SINGERSTYLE"), r.getString("TIMETAB")) :: list
         }
         r.close()
         if (log.isDebugEnabled)
@@ -54,14 +53,16 @@ class DataSyncActor extends Actor with ActorLogging {
 
   def syncSong(request: SyncSongRequest) = withConnection {
     conn =>
-      val songSql = "select * from( select a.* , rownum ru from (select  * from syncmaterial_song a order by songid asc) a where rownum <= ?) where ru > ?  "
+      val songSql = "select * from( select a.* , rownum ru from (select  * from syncmaterial_song a where timetab >= ? and isplay='true' order by timetab asc) a where rownum <= ?) where ru > ?  "
       val albumSql = "select * from album_song where songid = ?"
       val songStatement = conn.prepareStatement(songSql)
       if (log.isDebugEnabled)
         log.debug(s"prepare to synchronize song")
       try {
-        songStatement.setInt(2, (request.pageNumber - 1) * request.recordPerPage)
-        songStatement.setInt(1, request.pageNumber * request.recordPerPage)
+        songStatement.setInt(3, (request.pageNumber - 1) * request.recordPerPage)
+        songStatement.setInt(2, request.pageNumber * request.recordPerPage)
+        songStatement.setDate(1, parseDate(request.fromTime))
+
         if (log.isDebugEnabled)
           log.debug("before query song")
         val r = songStatement.executeQuery()
@@ -70,7 +71,7 @@ class DataSyncActor extends Actor with ActorLogging {
         var songList = List[Song]()
         while (r.next()) {
           val songId = r.getString("SONGID")
-          songList = Song(songId, r.getString("SONGNAME"), r.getString("LANGUAGE"), r.getString("LYRICURL"), r.getString("SONGNAMEPINYIN"), r.getString("LENGTH"), r.getString("PUBLISHYEAR"), r.getString("INTRO"), albumsBySongId(songId, conn), artistBySongId(songId, conn)) :: songList
+          songList = Song(songId, r.getString("SONGNAME"), r.getString("LANGUAGE"), r.getString("LYRICURL"), r.getString("SONGNAMEPINYIN"), r.getString("LENGTH"), r.getString("PUBLISHYEAR"), r.getString("INTRO"), albumsBySongId(songId, conn), artistBySongId(songId, conn), r.getString("ISPLAY"), r.getString("TIMETAB")) :: songList
         }
         r.close()
         if (log.isDebugEnabled)
@@ -79,6 +80,11 @@ class DataSyncActor extends Actor with ActorLogging {
       } finally {
         songStatement.close
       }
+  }
+
+  def parseDate(date: String) = {
+    val df = new SimpleDateFormat("yyyyMMddHHmmss")
+    new java.sql.Date(df.parse(date).getTime())
   }
 
   def artistBySongId(songId: String, conn: Connection) = {
@@ -122,10 +128,11 @@ class DataSyncActor extends Actor with ActorLogging {
 
   def syncAlbum(request: SyncAlbumRequest) = withConnection {
     conn =>
-      val sql = "select * from( select a.*, rownum ru from (select * from syncmaterial_album a order by albumid asc) a where rownum <= ?) where ru > ? "
+      val sql = "select * from( select a.*, rownum ru from (select * from syncmaterial_album a  where timetab >= ? order by timetab asc) a where rownum <= ?) where ru > ? "
       val albumStatement = conn.prepareStatement(sql)
-      albumStatement.setInt(2, (request.pageNumber - 1) * request.recordPerPage)
-      albumStatement.setInt(1, request.pageNumber * request.recordPerPage)
+      albumStatement.setInt(3, (request.pageNumber - 1) * request.recordPerPage)
+      albumStatement.setInt(2, request.pageNumber * request.recordPerPage)
+      albumStatement.setDate(1, parseDate(request.fromTime))
       log.debug(s"before execute query")
       var list = List[Album]()
       try {
@@ -133,7 +140,7 @@ class DataSyncActor extends Actor with ActorLogging {
         log.debug(s"execute query done ")
         while (r.next()) {
           val albumId: String = r.getString("ALBUMID")
-          list = Album(albumId, r.getString("ALBUMNAME"), r.getString("TRACKCOUNT"), r.getString("PRODUCTIONCOMPANY"), r.getString("PUBLISHCOMPANY"), r.getString("PUBLISHDATE"), r.getString("PUBLISHAREA"), r.getString("LANGUAGE"), r.getString("ALBUMPICS"), r.getString("ALBUMPICM"), r.getString("SALESVOLUME"), r.getString("AWARDS"), r.getString("ALBUMNAMEPINYIN"), r.getString("ALBUMINTRO"), artistByAlbumId(albumId, conn)) :: list
+          list = Album(albumId, r.getString("ALBUMNAME"), r.getString("TRACKCOUNT"), r.getString("PRODUCTIONCOMPANY"), r.getString("PUBLISHCOMPANY"), r.getString("PUBLISHDATE"), r.getString("PUBLISHAREA"), r.getString("LANGUAGE"), r.getString("ALBUMPICS"), r.getString("ALBUMPICM"), r.getString("SALESVOLUME"), r.getString("AWARDS"), r.getString("ALBUMNAMEPINYIN"), r.getString("ALBUMINTRO"), artistByAlbumId(albumId, conn), r.getString("TIMETAB")) :: list
         }
         r.close()
       } finally {
@@ -163,3 +170,4 @@ class DataSyncActor extends Actor with ActorLogging {
     result
   }
 }
+

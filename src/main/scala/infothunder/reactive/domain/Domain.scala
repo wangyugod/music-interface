@@ -10,11 +10,11 @@ case class SyncSongRequest(fromTime: String, pageNumber: Int, recordPerPage: Int
 
 case class SyncAlbumRequest(fromTime: String, pageNumber: Int, recordPerPage: Int) extends RestMessage
 
-case class Artist(artistid: String, artistname: String, gender: String, englishname: String, artistnamepinyin: String, nickname: String, artistpics: String, artistpicm: String, company: String, country: String, birthdate: String, birthplace: String, school: String, representworks: String, height: String, weight: String, hobby: String, awards: String, intro: String, singerarea: String, singerstyle: String) extends RestMessage
+case class Artist(artistid: String, artistname: String, gender: String, englishname: String, artistnamepinyin: String, nickname: String, artistpics: String, artistpicm: String, company: String, country: String, birthdate: String, birthplace: String, school: String, representworks: String, height: String, weight: String, hobby: String, awards: String, intro: String, singerarea: String, singerstyle: String, lastUpdatedTime: String) extends RestMessage
 
-case class Song(songid: String, songname: String, language: String, lyricurl: String, songnamepinyin: String, length: String, publishyear: String, intro: String, albums: List[String], artists: List[String]) extends RestMessage
+case class Song(songid: String, songname: String, language: String, lyricurl: String, songnamepinyin: String, length: String, publishyear: String, intro: String, albums: List[String], artists: List[String], playable: String, lastUpdatedTime: String) extends RestMessage
 
-case class Album(albumid: String, albumname: String, trackcount: String, productioncompany: String, publishcompany: String, publishdate: String, publisharea: String, language: String, albumpics: String, albumpicm: String, salesvolume: String, awards: String, albumnamepinyin: String, albumintro: String, artists: List[String]) extends RestMessage
+case class Album(albumid: String, albumname: String, trackcount: String, productioncompany: String, publishcompany: String, publishdate: String, publisharea: String, language: String, albumpics: String, albumpicm: String, salesvolume: String, awards: String, albumnamepinyin: String, albumintro: String, artists: List[String], lastUpdatedTime: String) extends RestMessage
 
 case class PlayListRequest(songIds: Array[String]) extends RestMessage
 
