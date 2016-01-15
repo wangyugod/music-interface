@@ -5,10 +5,10 @@ import akka.actor.{Props, ActorSystem}
 import akka.util.Timeout
 import infothunder.reactive.api.{ReactiveApi, MainActors}
 import infothunder.reactive.db.DBHelper
-import infothunder.reactive.routing.RestRouting
 import akka.pattern.ask
 import scala.concurrent.duration._
 import spray.can.Http
+import infothunder.reactive.routing.RestRouting
 
 
 /**

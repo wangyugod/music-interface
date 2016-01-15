@@ -1,15 +1,21 @@
 package infothunder.reactive.routing
 
-import akka.actor.{ Actor, Props }
+import akka.actor.Actor
+import akka.actor.Props
+import infothunder.reactive.core.AccessRushActor
+import infothunder.reactive.core.DataSyncActor
+import infothunder.reactive.core.MusicPlayActor
+import infothunder.reactive.core.StatisticsActor
+import infothunder.reactive.core.WeChatTokenActor
+import infothunder.reactive.db.AccessRushDB
 import infothunder.reactive.db.DBHelper
 import infothunder.reactive.domain._
-import infothunder.reactive.core.{ MusicPlayActor, DataSyncActor }
 import spray.http.HttpHeaders.RawHeader
-import spray.routing.{ HttpService, Route }
-import scala.concurrent.duration._
-import infothunder.reactive.core.AccessRushActor
-import infothunder.reactive.db.AccessRushDB
-import infothunder.reactive.core.WeChatTokenActor
+import spray.routing.HttpService
+import spray.routing.Route
+import infothunder.reactive.core.ReportActor
+import spray.http.MediaTypes._
+import spray.http.StatusCodes
 
 class RestRouting extends HttpService with Actor with PerRequestCreator {
   implicit def actorRefFactory = context
@@ -20,75 +26,27 @@ class RestRouting extends HttpService with Actor with PerRequestCreator {
   AccessRushDB.init
 
   val route = {
-    get {
-      pathPrefix("rest" / "sync") {
-        path("artist") {
-          parameters('fromTime, 'pageNumber.as[Int], 'numberPerPage.as[Int]) { (fromTime, pageNumber, numberPerPage) =>
-            syncData {
-              SyncArtistRequest(fromTime, pageNumber, numberPerPage)
+    respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
+      respondWithHeader(RawHeader("Access-Control-Allow-Headers", "Content-Type,X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5,  Date, X-Api-Version, X-File-Name")) {
+        respondWithHeader(RawHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")) {
+          respondWithMediaType(`application/json`) {
+            options {
+              complete(StatusCodes.OK)
+            } ~ post { 
+              path("rest" / "db" / "report-demo") {
+                import spray.httpx.SprayJsonSupport._
+                import spray.util._
+                import ReportRequestJsonSupport._
+                entity(as[ReportRequest]) {
+                  data =>
+                    reportDemo(data)
+                }
+              }
             }
           }
-        } ~ path("song") {
-          parameters('fromTime, 'pageNumber.as[Int], 'numberPerPage.as[Int]) { (fromTime, pageNumber, numberPerPage) =>
-            syncData {
-              SyncSongRequest(fromTime, pageNumber, numberPerPage)
-            }
-          }
-        } ~ path("album") {
-          parameters('fromTime, 'pageNumber.as[Int], 'numberPerPage.as[Int]) { (fromTime, pageNumber, numberPerPage) =>
-            syncData {
-              SyncAlbumRequest(fromTime, pageNumber, numberPerPage)
-            }
-          }
-        }
-      } ~ path("test") {
-        complete("hello")
-      } ~ pathEndOrSingleSlash {
-        complete(index)
-      } ~ path("ar" / "user") {
-        parameters('prefix.as[String], 'numberPerPage.as[Int], 'pageNumber.as[Int]) {
-          (prefix, numberPerPage, pageNumber) =>
-            accessRush(AccessRushRequest(prefix, numberPerPage, pageNumber))
         }
       }
-    } ~ post {
-      path("rest" / "player" / "songs") {
-        entity(as[String]) {
-          data =>
-            respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
-              play(PlayListRequest(data.substring(1, data.length() - 1).split(",")))
-            }
-        }
-      }
-    } ~ post {
-      path("rest" / "wechat" / "token") {
-        entity(as[String]) {
-          data =>
-            respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
-              wechatToken(WechatTokenRequest(data))
-            }
-        }
-      }
-    } ~ post{
-      path("rest" / "ar" / "delete") {
-        entity(as[String]) {
-          data =>
-            respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
-              accessRush(DeleteRushRequest(data))
-            }
-        }
-      }
-    } ~ post{
-      path("rest" / "ar" / "insert") {
-        entity(as[String]) {
-          data =>
-            respondWithHeader(RawHeader("Access-Control-Allow-Origin", "*")) {
-              accessRush(BatchInsertRushRequest(data))
-            }
-        }
-      }
-    }
-
+    } 
     /*get {
       path("pets") {
         parameters('names) { names =>
@@ -131,7 +89,13 @@ class RestRouting extends HttpService with Actor with PerRequestCreator {
 
   def accessRush(message: RestMessage): Route =
     ctx => perRequest(ctx, Props(new AccessRushActor()), message)
-    
-  def wechatToken(message: RestMessage): Route = 
+
+  def wechatToken(message: RestMessage): Route =
     ctx => perRequest(ctx, Props(new WeChatTokenActor), message)
+
+  def statistics(message: RestMessage): Route =
+    ctx => perRequest(ctx, Props(new StatisticsActor()), message)
+
+  def reportDemo(message: RestMessage): Route =
+    ctx => perRequest(ctx, Props(new ReportActor()), message)
 }

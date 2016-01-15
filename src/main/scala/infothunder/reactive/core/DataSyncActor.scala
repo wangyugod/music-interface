@@ -140,7 +140,7 @@ class DataSyncActor extends Actor with ActorLogging {
         log.debug(s"execute query done ")
         while (r.next()) {
           val albumId: String = r.getString("ALBUMID")
-          list = Album(albumId, r.getString("ALBUMNAME"), r.getString("TRACKCOUNT"), r.getString("PRODUCTIONCOMPANY"), r.getString("PUBLISHCOMPANY"), r.getString("PUBLISHDATE"), r.getString("PUBLISHAREA"), r.getString("LANGUAGE"), r.getString("ALBUMPICS"), r.getString("ALBUMPICM"), r.getString("SALESVOLUME"), r.getString("AWARDS"), r.getString("ALBUMNAMEPINYIN"), r.getString("ALBUMINTRO"), artistByAlbumId(albumId, conn), r.getString("TIMETAB")) :: list
+          list = Album(albumId, r.getString("ALBUMNAME"), r.getString("TRACKCOUNT"), r.getString("PRODUCTIONCOMPANY"), r.getString("PUBLISHCOMPANY"), r.getString("PUBLISHDATE"), r.getString("PUBLISHAREA"), r.getString("LANGUAGE"), r.getString("ALBUMPICS"), r.getString("ALBUMPICM"), r.getString("SALESVOLUME"), r.getString("AWARDS"), r.getString("ALBUMNAMEPINYIN"), r.getString("ALBUMINTRO"), artistByAlbumId(albumId, conn), r.getString("TIMETAB"), r.getString("STATUS")) :: list
         }
         r.close()
       } finally {

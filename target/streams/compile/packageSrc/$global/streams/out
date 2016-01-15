@@ -14,6 +14,8 @@
 [0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\profile\ProfileActor.scala[0m
 [0m[[0mdebug[0m] [0m	infothunder\reactive\routing\PerRequest.scala[0m
 [0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\routing\PerRequest.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\core\ReportActor.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\ReportActor.scala[0m
 [0m[[0mdebug[0m] [0m	infothunder\reactive\core\MusicPlayActor.scala[0m
 [0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\MusicPlayActor.scala[0m
 [0m[[0mdebug[0m] [0m	infothunder\reactive\core\AccessRushActor.scala[0m
@@ -22,8 +24,12 @@
 [0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\db\AccessRushDB.scala[0m
 [0m[[0mdebug[0m] [0m	infothunder\reactive\profile\ProfileService.scala[0m
 [0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\profile\ProfileService.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\db\NamedParameterStatement.java[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\java\infothunder\reactive\db\NamedParameterStatement.java[0m
 [0m[[0mdebug[0m] [0m	infothunder\reactive\domain\Domain.scala[0m
 [0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\domain\Domain.scala[0m
+[0m[[0mdebug[0m] [0m	infothunder\reactive\core\StatisticsActor.scala[0m
+[0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\StatisticsActor.scala[0m
 [0m[[0mdebug[0m] [0m	infothunder\reactive\core\DataSyncActor.scala[0m
 [0m[[0mdebug[0m] [0m	  E:\develop\music-interface\src\main\scala\infothunder\reactive\core\DataSyncActor.scala[0m
 [0m[[0mdebug[0m] [0m	infothunder\reactive\core\WeChatTokenActor.scala[0m

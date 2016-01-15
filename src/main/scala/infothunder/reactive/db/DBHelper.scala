@@ -42,6 +42,20 @@ object DBHelper {
       conn.close()
     }
   }
+  
+  def withNamedStatement[T](sql: String)(f: NamedParameterStatement => T): T = {
+    println(s"prepare to get connection")
+    val conn = dataSource.getConnection
+    println(s"got connection")
+    val statement = new NamedParameterStatement(conn, sql)
+//    val statement = conn.prepareStatement(sql)
+    try {
+      f(statement)
+    } finally {
+      statement.close()
+      conn.close()
+    }
+  }
 
   def withConnection[T](f: Connection => T): T = {
     println(s"prepare to get connection")
