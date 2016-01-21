@@ -34,7 +34,8 @@ trait PerRequest extends Actor with Json4sSupport with ActorLogging {
   def receive = {
     case res: RestMessage => complete(OK, res)
     case result: List[RestMessage] =>
-      log.debug(s"received result $result")
+      complete(OK, result)
+    case result: Map[String, String] =>
       complete(OK, result)
     case v: Validation => complete(BadRequest, v)
     case ReceiveTimeout => complete(GatewayTimeout, Error("Request timeout"))

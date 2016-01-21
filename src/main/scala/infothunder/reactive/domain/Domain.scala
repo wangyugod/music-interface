@@ -57,18 +57,18 @@ case class SongPlayStatisticInfoRequest(songName: String, artistName: String, so
 
 case class SUCCESS(code: Int, message: String) extends RestMessage
 
-case class DropdownDirectiveRequest(columnNames: Array[String], tableName: String, condition: String) extends RestMessage
+case class DropdownDirectiveRequest(columnNames: Array[String], tableName: String, condition: String, values: Array[String]) extends RestMessage
 
-case class DropdownDirectiveResponse(resultMap: Map[String, String]) extends RestMessage
+case class DropdownDirectiveResponse(result: List[(String, String)])extends RestMessage
+
+case class InterBusinessReportRequest(startDate: String, endDate: String, dept: String)extends RestMessage
+
+case class InterBusinessReportResponse(overallIncome: String, ioBusiIncome: String, ioSumAmount: String, ioCount: Int, insuranceIncome: String, estInsuranceIncome: String, estSumAmount: String, estCount: Int, lifeInsuranceIncome: String, lifeInsCount: Int, lifeInsSumAmount: String, stockIncome: String, stockSumAmount: String, stockCount: Int, finBusiIncome: String, personalFinIncome: String, personalFinAmt: String, personalFinCnt: Int, entFinAmt: String, entFinCount: Int, otherBusIncome: String, otherSumAmt: String)extends RestMessage
 
 case class ReportRequest(startDate: String, endDate: String) extends RestMessage
 
 case class ReportResponse(agent:String, name: String, sqmyejf: String, bqfsejf: String, bqfsedf: String, bqmyejf: String) extends RestMessage
 
-
-// Exceptions
-
-case object PetOverflowException extends Exception("PetOverflowException: OMG. Pets. Everywhere.")
 
 object ToneDownloadJsonSupport extends DefaultJsonProtocol{
    implicit val downloadJsonFormat = jsonFormat4(ToneDownloadInfoRequest)
@@ -80,4 +80,12 @@ object SongPlayJsonSupport extends DefaultJsonProtocol{
 
 object ReportRequestJsonSupport extends DefaultJsonProtocol{
   implicit val reportJsonFormat = jsonFormat2(ReportRequest)
+}
+
+object DropdownDirectiveRequestJsonSupport extends DefaultJsonProtocol{
+  implicit val dropdownJsonFormat = jsonFormat4(DropdownDirectiveRequest)
+}
+
+object InterBusinessReportRequestJsonSupport extends DefaultJsonProtocol{
+  implicit val interBusinessReportJsonFormat = jsonFormat3(InterBusinessReportRequest)
 }

@@ -32,12 +32,28 @@ class RestRouting extends HttpService with Actor with PerRequestCreator {
           respondWithMediaType(`application/json`) {
             options {
               complete(StatusCodes.OK)
-            } ~ post { 
-              path("rest" / "db" / "report-demo") {
+            } ~ post {
+              path("rest" / "report" / "report-demo") {
                 import spray.httpx.SprayJsonSupport._
                 import spray.util._
                 import ReportRequestJsonSupport._
                 entity(as[ReportRequest]) {
+                  data =>
+                    reportDemo(data)
+                }
+              } ~ path("rest" / "report" / "directive"){
+                import spray.httpx.SprayJsonSupport._
+                import spray.util._
+                import DropdownDirectiveRequestJsonSupport._
+                entity(as[DropdownDirectiveRequest]) {
+                  data =>
+                    reportDemo(data)
+                }
+              } ~ path("rest" / "report" / "interbusistat"){
+                import spray.httpx.SprayJsonSupport._
+                import spray.util._
+                import InterBusinessReportRequestJsonSupport._
+                entity(as[InterBusinessReportRequest]) {
                   data =>
                     reportDemo(data)
                 }

@@ -32,5 +32,8 @@
 [0m[[33mwarn[0m] [0mE:\develop\music-interface\src\main\scala\infothunder\reactive\routing\PerRequest.scala:36: non-variable type argument infothunder.reactive.domain.RestMessage in type pattern List[infothunder.reactive.domain.RestMessage] is unchecked since it is eliminated by erasure[0m
 [0m[[33mwarn[0m] [0m    case result: List[RestMessage] =>[0m
 [0m[[33mwarn[0m] [0m                 ^[0m
-[0m[[33mwarn[0m] [0mone warning found[0m
+[0m[[33mwarn[0m] [0mE:\develop\music-interface\src\main\scala\infothunder\reactive\routing\PerRequest.scala:38: non-variable type argument String in type pattern Map[String,String] is unchecked since it is eliminated by erasure[0m
+[0m[[33mwarn[0m] [0m    case result: Map[String, String] =>[0m
+[0m[[33mwarn[0m] [0m                 ^[0m
+[0m[[33mwarn[0m] [0mtwo warnings found[0m
 [0m[[0minfo[0m] [0mMain Scala API documentation successful.[0m
