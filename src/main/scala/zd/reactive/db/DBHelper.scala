@@ -7,7 +7,6 @@ import com.mchange.v2.c3p0.ComboPooledDataSource
 
 import akka.actor.ActorLogging
 import zd.reactive.Configuration._
-import zd.reactive.db.NamedParameterStatement
 
 /**
  * Created by Simon Wang on 2014/12/5.
@@ -17,7 +16,6 @@ object DBHelper {
   dataSource.setJdbcUrl(dbUrl)
   dataSource.setUser(userName)
   dataSource.setPassword(password)
-  println(s"driver is $driver")
   dataSource.setDriverClass(driver)
   dataSource.setInitialPoolSize(2)
   dataSource.setMinPoolSize(1)
@@ -27,6 +25,8 @@ object DBHelper {
   dataSource.setCheckoutTimeout(60000)
   dataSource.setMaxIdleTimeExcessConnections(40)
   dataSource.setIdleConnectionTestPeriod(300)
+  
+  
 
   //initialize connection pool 
   def init = {

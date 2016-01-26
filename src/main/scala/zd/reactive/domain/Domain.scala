@@ -18,7 +18,7 @@ import MediaTypes._
 trait RestMessage
 
 
-case class Error(message: String)
+case class Error(message: String) extends RestMessage
 
 case class Validation(message: String)
 
@@ -36,15 +36,15 @@ case class ReportRequest(startDate: String, endDate: String) extends RestMessage
 
 case class ReportResponse(agent:String, name: String, sqmyejf: String, bqfsejf: String, bqfsedf: String, bqmyejf: String) extends RestMessage
 
+case class LoginRequest(login: String, password: String) extends RestMessage
 
-object ReportRequestJsonSupport extends DefaultJsonProtocol{
+case class LoginResponse(login: String, success: Boolean, message: String) extends RestMessage
+
+
+
+object DomainJsonSupport extends DefaultJsonProtocol{
   implicit val reportJsonFormat = jsonFormat2(ReportRequest)
-}
-
-object DropdownDirectiveRequestJsonSupport extends DefaultJsonProtocol{
   implicit val dropdownJsonFormat = jsonFormat4(DropdownDirectiveRequest)
-}
-
-object InterBusinessReportRequestJsonSupport extends DefaultJsonProtocol{
   implicit val interBusinessReportJsonFormat = jsonFormat3(InterBusinessReportRequest)
+  implicit val loginRequestJsonFormat = jsonFormat2(LoginRequest)
 }

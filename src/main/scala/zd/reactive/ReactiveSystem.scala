@@ -1,7 +1,6 @@
 package zd.reactive
 
 import scala.concurrent.duration._
-
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.io.IO
@@ -12,6 +11,7 @@ import routing.RestRouting
 import spray.can.Http
 import zd.reactive.db.DBHelper
 import zd.reactive.routing.RestRouting
+import zd.reactive.db.ScalalikeConnectionPool
 
 
 /**
@@ -24,8 +24,13 @@ object ReactiveSystem extends App{
     //close datasource connection pool when shutting down
     println("reactive system shut down now")
     DBHelper.close
+    ScalalikeConnectionPool.close
   }
   implicit val timeout = Timeout(60.seconds)
+  
+  //initialize db setting
+  DBHelper.init
+  ScalalikeConnectionPool.init
 
   IO(Http) ? Http.Bind(serviceActor, Configuration.host, port = Configuration.portHttp)
 
@@ -51,4 +56,6 @@ object Configuration {
   val ardbUrl = config.getString("arjdbc.url")
   val arUserName = config.getString("arjdbc.username")
   val arPassword = config.getString("arjdbc.password") 
+  
+  val pwdServerEnabled = config.getBoolean("business.pwd.server.enabled")
 }
