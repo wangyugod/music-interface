@@ -2,10 +2,6 @@ package zd.reactive.routing
 
 import akka.actor.Actor
 import akka.actor.Props
-import zd.reactive.core.AccessRushActor
-import zd.reactive.core.DataSyncActor
-import zd.reactive.core.MusicPlayActor
-import zd.reactive.core.StatisticsActor
 import zd.reactive.db.AccessRushDB
 import zd.reactive.db.DBHelper
 import zd.reactive.domain._
@@ -95,18 +91,6 @@ class RestRouting extends HttpService with Actor with PerRequestCreator {
 
   /*def petsWithOwner(message : RestMessage): Route =
     ctx => perRequest(ctx, Props(new GetPetsWithOwnersActor(petService, ownerService)), message)*/
-
-  def syncData(message: RestMessage): Route =
-    ctx => perRequest(ctx, Props(new DataSyncActor()), message)
-
-  def play(message: RestMessage): Route =
-    ctx => perRequest(ctx, Props(new MusicPlayActor()), message)
-
-  def accessRush(message: RestMessage): Route =
-    ctx => perRequest(ctx, Props(new AccessRushActor()), message)
-
-  def statistics(message: RestMessage): Route =
-    ctx => perRequest(ctx, Props(new StatisticsActor()), message)
 
   def reportDemo(message: RestMessage): Route =
     ctx => perRequest(ctx, Props(new ReportActor()), message)
